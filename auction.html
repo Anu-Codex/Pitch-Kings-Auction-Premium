@@ -217,7 +217,7 @@
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
                                 <thead class="bg-black/40 text-[10px] uppercase tracking-[0.2em] text-gray-500">
-                                    <tr><th class="p-6">Player Identity</th><th class="p-6">Div</th><th class="p-6">Rank</th><th class="p-6">Phone</th><th class="p-6">Tier</th><th class="p-6">Status</th><th class="p-6">Base Value</th><th class="p-6 text-center">Operation</th></tr>
+                                    <tr><th class="p-6">Player Identity</th><th class="p-6">"Star"</th><th class="p-6">Phone</th><th class="p-6">Tier</th><th class="p-6">Status</th><th class="p-6">Base Value</th><th class="p-6 text-center">Operation</th></tr>
                                 </thead>
                                 <tbody id="playerList" class="text-sm divide-y divide-white/5"></tbody>
                             </table>
@@ -228,10 +228,9 @@
                         <h3 class="text-xl font-bold mb-6 flex items-center gap-3 text-white"><i class="fa-solid fa-plus-circle text-cyan-400"></i> Register New Legend</h3>
                         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <input id="pName" type="text" placeholder="Name" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white">
-                            <input id="pStrength" type="number" placeholder="Current Div" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white">
-                            <select id="pType" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white"><option>Epic</option><option>Showtime</option><option>Big Time</option><option>Standard</option></select>
+                            <input id="pStrength" type="number" placeholder="Current Star" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white">
+                            <select id="pType" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white"><option>Supernova</option><option>Quasar</option><option>Nebula</option></select>
                             <input id="pBase" type="number" placeholder="Base (M)" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white">
-                            <input id="pDiv" type="number" placeholder="Rank" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white">
                             <input id="pPhone" type="number" placeholder="Phone No" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white">
                             
                             <div class="col-span-2 space-y-1">
@@ -508,7 +507,6 @@ function startApp() {
             <tr class="hover:bg-white/5 border-b border-white/5 group transition-colors">
                 <td class="p-6 font-bold text-white group-hover:text-cyan-400 transition">${p.name}</td>
                 <td class="p-6 text-gray-400 font-bold">${p.strength}</td>
-                <td class="p-4 font-bold text-cyan-400">Rank ${p.division || 'N/A'}</td> 
                 <td class="p-4 text-gray-500">${p.phone || 'N/A'}</td>
                 <td class="p-6"><span class="px-3 py-1 rounded-lg text-[10px] font-black border border-white/10 bg-gray-800 tracking-widest uppercase">${p.cardType}</span></td>
                 <td class="p-6 font-black uppercase text-[10px] tracking-widest ${p.status === 'Available' ? 'text-cyan-400' : 'text-red-500'}">${p.status}</td>
@@ -573,10 +571,9 @@ function startApp() {
         ` : ''}
                 <div class="flex flex-col lg:flex-row items-center gap-10 w-full justify-center">
                     <div class="premium-card-neon w-64 h-80 rounded-[2rem] p-6 flex flex-col items-center justify-between shadow-2xl">
-                        <span class="text-4xl font-black text-cyan-400">Div ${p.strength}</span>
+                        <span class="text-4xl font-black text-cyan-400">Star ${p.strength}</span>
                         <div class="text-center">
                             <h2 class="text-3xl player-name-prominent uppercase italic">${p.name}</h2>
-                            <p class="text-cyan-400 font-bold text-xs uppercase tracking-widest">Rank ${p.division || '1'}</p>
                         </div>
                         <div class="bg-cyan-400 text-black px-4 py-1.5 rounded-full font-black text-[10px] uppercase">${p.cardType}</div>
                     </div>
@@ -653,7 +650,7 @@ function startApp() {
             imageUrl: uploadedUrl
         };
         socket.emit('addPlayer', data);
-        ['pName', 'pStrength', 'pBase', 'pDiv', 'pPhone', 'pImgFile'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+        ['pName', 'pStrength', 'pBase', 'pPhone', 'pImgFile'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
     }
 
     async function uploadToImgBB(file) {
