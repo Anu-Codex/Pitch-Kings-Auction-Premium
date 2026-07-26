@@ -933,9 +933,9 @@ function playSoldEffect() {
     function generatePDF() {
         const { jsPDF } = window.jspdf; const doc = new jsPDF();
         doc.text("PES PARK REPORT", 14, 20);
-        const soldData = currentPlayers.filter(p => p.status === 'Sold').map(p => [p.name, p.strength, p.division, p.phone, p.soldTo]);
-        doc.autoTable({ startY: 30, head: [['Player', 'Div', 'Rank', 'Phone', 'Sold Status']], body: soldData });
-        doc.save('PES_PARK_Report.pdf');
+        const soldData = currentPlayers.filter(p => p.status === 'Sold').map(p => [p.name, p.strength, p.phone, p.soldTo]);
+        doc.autoTable({ startY: 30, head: [['Player', 'Star', 'Phone', 'Sold Status']], body: soldData });
+        doc.save('PITCH_KINGS_FC_Report.pdf');
     }
 
     if(user) startApp();
