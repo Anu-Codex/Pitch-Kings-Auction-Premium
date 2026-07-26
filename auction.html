@@ -91,6 +91,30 @@
     padding: 2rem;
     border-radius: 2rem;
 }
+        .main-footer {
+    width: 100%;
+    max-width: 500px; /* Match the width of your cards */
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 20px;
+    flex-shrink: 0; /* Prevents footer from squishing */
+    display: block; /* Ensures it takes its own line */
+    clear: both;    /* Safety clear */
+}
+
+/* Gradient text for the names as requested */
+.dev-name {
+    background: linear-gradient(90deg, #10b981, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+        .owner-name {
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    }
     </style>
 </head>
 <body class="min-h-screen">
@@ -335,6 +359,7 @@
     </div>
     <!-- Hidden input for updating existing players -->
 <input type="file" id="updateImgInput" accept="image/*" class="hidden" onchange="processImageUpdate(this)">
+        
     <script>
     const socket = io("https://pk-auc-go.onrender.com"); 
     
@@ -917,6 +942,13 @@ function playSoldEffect() {
     if(user) startApp();
     else showAuthStep('choice');
             </script>
-        
+        <footer class="main-footer">
+        <div style="width: 50px; height: 2px; background: linear-gradient(90deg, #10b981, #f59e0b); margin: 0 auto 20px; opacity: 0.5;"></div>
+        <p style="font-size: 0.75rem; color: #64748b; line-height: 1.6;">
+            © Copyright: <span class="dev-name">Anubhav (Developer)</span> & 
+            <span class="owner-name">Pugazh (PES PARK)</span> 
+            2026-27 | All Rights Reserved
+        </p>
+    </footer>
 </body>
 </html>
