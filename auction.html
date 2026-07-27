@@ -156,7 +156,7 @@ body {
     </button>
 </div>
 
-    <!-- AUTH OVERLAY (Replacement for old Login Modal) -->
+    <!-- AUTH OVERLAY -->
     <div id="authOverlay" class="fixed inset-0 z-[100] flex items-center justify-center bg-[#0a0f16]/98">
         <div class="premium-glass p-10 rounded-[2.5rem] w-full max-w-md border border-cyan-500/20 text-center">
             
@@ -166,49 +166,42 @@ body {
                     <i class="fa-solid fa-bolt-lightning text-3xl text-cyan-400"></i>
                 </div>
                 <h1 class="text-4xl font-bold tracking-tighter uppercase text-white">PITCH <span class="text-cyan-400">KINGS FC</span></h1>
-                <p class="text-gray-400 text-sm font-medium tracking-widest uppercase">Universal Nexus</p>
-                
                 <div class="space-y-3 pt-4">
                     <button onclick="guestAccess()" class="w-full ef-gradient text-black font-black py-4 rounded-2xl btn-premium uppercase">View as a Guest</button>
                     <div class="grid grid-cols-2 gap-3">
-                        <button onclick="showAuthStep('captain')" class="bg-white/5 border border-white/10 text-white font-bold py-3 rounded-xl hover:bg-white/10">Captain Sign-In</button>
-                        <button onclick="showAuthStep('admin')" class="bg-white/5 border border-white/10 text-white font-bold py-3 rounded-xl hover:bg-white/10">Admin Sign-In</button>
+                        <button onclick="showAuthStep('captain')" class="bg-white/5 border border-white/10 text-white font-bold py-3 rounded-xl">Captain</button>
+                        <button onclick="showAuthStep('admin')" class="bg-white/5 border border-white/10 text-white font-bold py-3 rounded-xl">Admin</button>
                     </div>
                 </div>
-                <!-- STEP 2: GUEST LOGIN (NEW) -->
-<div id="auth_guest" class="hidden space-y-4">
-    <div class="w-20 h-20 bg-green-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30">
-        <i class="fa-solid fa-eye text-3xl text-green-400"></i>
-    </div>
-    <h2 class="text-2xl font-bold text-white uppercase">Guest Access</h2>
-    <p class="text-gray-400 text-sm">Enter the guest access key to view the auction.</p>
-    <input type="password" id="guest_pass" placeholder="Guest Password" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl outline-none focus:border-green-400 text-white text-center font-bold tracking-widest">
-    <button onclick="handleGuestLogin()" class="w-full bg-green-500 hover:bg-green-400 text-black font-black py-4 rounded-2xl btn-premium uppercase">Verify & Enter</button>
-    <button onclick="showAuthStep('choice')" class="text-gray-500 text-sm uppercase font-bold">Back</button>
-</div>
+            </div>
 
-            <!-- STEP 3: SPECIAL LOGIN (CAPTAIN/ADMIN) -->
+            <!-- STEP 2: GUEST LOGIN -->
+            <div id="auth_guest" class="hidden space-y-4">
+                <h2 class="text-2xl font-bold text-white uppercase">Guest Access</h2>
+                <input type="password" id="guest_pass" placeholder="Guest Password" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl text-white text-center">
+                <button onclick="handleGuestLogin()" class="w-full bg-green-500 text-black font-black py-4 rounded-2xl uppercase">Verify & Enter</button>
+                <button onclick="showAuthStep('choice')" class="text-gray-500 text-sm uppercase">Back</button>
+            </div>
+
+            <!-- STEP 3: SPECIAL LOGIN -->
             <div id="auth_special" class="hidden space-y-4">
                 <h2 id="special_title" class="text-2xl font-bold text-white uppercase">Authorized Login</h2>
-                <input type="email" id="spec_email" placeholder="Official Email" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-400 text-white">
-                <input type="password" id="spec_pass" placeholder="Password" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-400 text-white">
-                <button onclick="handleSpecialLogin()" class="w-full ef-gradient text-black font-black py-4 rounded-2xl btn-premium uppercase">Verify Identity</button>
-                <button onclick="showAuthStep('choice')" class="text-gray-500 text-sm uppercase font-bold">Back</button>
+                <input type="email" id="spec_email" placeholder="Official Email" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl text-white">
+                <input type="password" id="spec_pass" placeholder="Password" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl text-white">
+                <button onclick="handleSpecialLogin()" class="w-full ef-gradient text-black font-black py-4 rounded-2xl uppercase">Verify Identity</button>
+                <button onclick="showAuthStep('choice')" class="text-gray-500 text-sm uppercase">Back</button>
             </div>
 
             <!-- STEP 4: OTP VERIFICATION -->
             <div id="auth_otp" class="hidden space-y-6">
-                <div class="text-cyan-400"><i class="fa-solid fa-envelope-circle-check text-5xl"></i></div>
                 <h2 class="text-2xl font-bold text-white uppercase">Verify Email</h2>
-                <p class="text-gray-400 text-sm">We've sent a 6-digit code to your email.</p>
-                <input type="text" id="otp_input" placeholder="000000" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl outline-none focus:border-cyan-400 text-white text-center text-3xl tracking-[1rem] font-bold">
-                <button onclick="handleVerifyOTP()" class="w-full ef-gradient text-black font-black py-4 rounded-2xl btn-premium uppercase">Enter Arena</button>
+                <input type="text" id="otp_input" placeholder="000000" class="w-full bg-gray-900 border border-white/10 p-4 rounded-2xl text-white text-center text-3xl font-bold">
+                <button onclick="handleVerifyOTP()" class="w-full ef-gradient text-black font-black py-4 rounded-2xl uppercase">Enter Arena</button>
             </div>
 
             <p id="authError" class="text-red-400 text-sm mt-6 hidden font-bold"></p>
         </div>
-    </div>
-    </div>
+    </div> <!-- CLOSED CORRECTLY -->
 
     <!-- DASHBOARD -->
     <div id="dashboard" class="hidden">
