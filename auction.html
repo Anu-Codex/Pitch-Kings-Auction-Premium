@@ -91,15 +91,20 @@
     padding: 2rem;
     border-radius: 2rem;
 }
-        .main-footer {
+        /* Center and push footer to the bottom */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-footer {
     width: 100%;
-    max-width: 500px; /* Match the width of your cards */
-    text-align: center;
+    max-width: 600px;
+    margin: 0 auto; /* This centers it */
     padding: 40px 20px;
-    margin-top: 20px;
-    flex-shrink: 0; /* Prevents footer from squishing */
-    display: block; /* Ensures it takes its own line */
-    clear: both;    /* Safety clear */
+    text-align: center;
+    margin-top: auto; /* This pushes it to the very bottom of the body */
 }
 
 /* Gradient text for the names as requested */
@@ -202,6 +207,7 @@
 
             <p id="authError" class="text-red-400 text-sm mt-6 hidden font-bold"></p>
         </div>
+    </div>
     </div>
 
     <!-- DASHBOARD -->
