@@ -397,8 +397,15 @@ body {
     }
 
     function guestAccess() {
-    showAuthStep('guest');
-}
+    // 1. Set local user
+    user = { name: "Guest_" + Math.floor(Math.random()*1000), role: "guest" };
+    
+    // 2. Tell the server a guest has joined (so it sends initialData)
+    socket.emit('guestSignIn', { password: "Auc@Nexus" }); 
+    
+    // 3. Open the dashboard
+    startApp();
+    }
 
 // This handles the password verification via Socket
 function handleGuestLogin() {
@@ -498,18 +505,19 @@ function startApp() {
     document.getElementById('dashboard').classList.remove('hidden');
     document.getElementById('userName').innerText = user.name;
     document.getElementById('userRole').innerText = user.role;
-    const chatContainer = document.getElementById('chatInputContainer');
-    
-    if (user.role === 'guest') {
-        // Hide the input for guests and show a "Read Only" notice
-        chatContainer.innerHTML = `
-            <div class="p-3 text-center text-gray-500 text-[10px] uppercase font-black tracking-widest bg-black/20">
-                <i class="fa-solid fa-eye mr-2"></i> Read-Only Mode for Guests
-            </div>`;
-    } else {
-        // Ensure captains and admins see the input (if not already there)
-        // This part is usually handled by your static HTML
-        chatContainer.classList.remove('hidden');
+    const chatInputContainer = document.getElementById('chatInputContainer');
+    if (chatInputContainer) {
+        if (user.role === 'guest') {
+            // Guests see a "Read Only" message instead of the input box
+            chatInputContainer.innerHTML = `
+                <div class="p-4 bg-black/20 text-center border-t border-white/5">
+                    <p class="text-[10px] text-gray-500 font-black uppercase tracking-widest">
+                        <i class="fa-solid fa-lock mr-1"></i> Read-Only Mode
+                    </p>
+                </div>`;
+        } else {
+            chatInputContainer.classList.remove('hidden');
+        }
     }
     
     if (user.role === 'admin') {
