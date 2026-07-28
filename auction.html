@@ -397,14 +397,7 @@ body {
     }
 
     function guestAccess() {
-    // 1. Set local user
-    user = { name: "Guest_" + Math.floor(Math.random()*1000), role: "guest" };
-    
-    // 2. Tell the server a guest has joined (so it sends initialData)
-    socket.emit('guestSignIn', { password: "Auc@Nexus" }); 
-    
-    // 3. Open the dashboard
-    startApp();
+    showAuthStep('guest');
     }
 
 // This handles the password verification via Socket
