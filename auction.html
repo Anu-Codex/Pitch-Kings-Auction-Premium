@@ -499,7 +499,9 @@ function startApp() {
     document.getElementById('userName').innerText = user.name;
     document.getElementById('userRole').innerText = user.role;
     const chatInput = document.getElementById('chatInputContainer');
-    if(chatInput) chatInput.classList.remove('hidden');
+    if (chatInput) {
+        chatInput.classList.remove('hidden');
+    }
     
     if (user.role === 'admin') {
         document.getElementById('adminControls').classList.remove('hidden');
@@ -717,18 +719,18 @@ function startApp() {
 
     function sendChat() { 
     const input = document.getElementById('chatInput');
-    const message = input.value.trim();
+    if(!input) return;
 
-    // If there is a message and a user is set, send it!
+    const message = input.value.trim();
     if(message && user) { 
         socket.emit('sendMessage', { 
             sender: user.name, 
             role: user.role, 
             text: message 
         }); 
-        input.value = ''; // Clear input after sending
+        input.value = ''; 
     } else if (!user) {
-        alert("You must be logged in or entered as a guest to chat.");
+        alert("Identity error. Please refresh and log in again.");
     }
     }
 
