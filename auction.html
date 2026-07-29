@@ -397,7 +397,15 @@ body {
     }
 
     function guestAccess() {
-    showAuthStep('guest');
+    // Generate a proper guest identity
+    const guestId = Math.floor(Math.random() * 9000) + 1000;
+    user = { 
+        name: "Guest_" + guestId, 
+        role: "guest" 
+    };
+    // Save to local storage
+    localStorage.setItem('nexus_user', JSON.stringify(user));
+    startApp();
     }
 
 // This handles the password verification via Socket
