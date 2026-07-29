@@ -498,9 +498,10 @@ function startApp() {
     document.getElementById('dashboard').classList.remove('hidden');
     document.getElementById('userName').innerText = user.name;
     document.getElementById('userRole').innerText = user.role;
-    const chatInput = document.getElementById('chatInputContainer');
-    if (chatInput) {
-        chatInput.classList.remove('hidden');
+    const chatInputArea = document.getElementById('chatInputContainer');
+    if (chatInputArea) {
+        chatInputArea.classList.remove('hidden');
+        chatInputArea.style.display = 'block'; // Absolute force
     }
     
     if (user.role === 'admin') {
@@ -722,15 +723,17 @@ function startApp() {
     if(!input) return;
 
     const message = input.value.trim();
-    if(message && user) { 
+    
+    // If user exists (Guest, Admin, or Captain), let them chat!
+    if(message && user && user.name) { 
         socket.emit('sendMessage', { 
             sender: user.name, 
             role: user.role, 
             text: message 
         }); 
-        input.value = ''; 
-    } else if (!user) {
-        alert("Identity error. Please refresh and log in again.");
+        input.value = ''; // Clear box
+    } else {
+        if(!user) alert("Please refresh the page to identify yourself.");
     }
     }
 
