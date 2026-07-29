@@ -513,8 +513,9 @@ function startApp() {
     document.getElementById('userRole').innerText = user.role;
     const chatInputArea = document.getElementById('chatInputContainer');
     if (chatInputArea) {
-        chatInputArea.classList.remove('hidden');
-        chatInputArea.style.display = 'block'; // Absolute force
+        chatInputArea.style.display = 'block';
+        chatInputArea.style.visibility = 'visible';
+        chatInputArea.style.opacity = '1';
     }
     
     if (user.role === 'admin') {
