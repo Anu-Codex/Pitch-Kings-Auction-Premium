@@ -354,12 +354,12 @@ body {
 
     <!-- THIS PART CHANGES BASED ON ROLE -->
     <div id="chatInputContainer" class="p-4 bg-black/40 border-t border-white/5">
-        <div class="flex gap-3 bg-gray-900 p-2 rounded-[1.5rem]">
-            <input id="chatInput" type="text" placeholder="Message..." class="flex-1 bg-transparent p-2 outline-none text-white text-sm" onkeypress="if(event.key==='Enter')sendChat()">
-            <button onclick="sendChat()" class="bg-cyan-400 text-black w-10 h-10 rounded-full">
-                <i class="fa-solid fa-paper-plane"></i>
-            </button>
-            </div>
+    <div class="flex gap-3 bg-gray-900 p-2 rounded-[1.5rem]">
+        <input id="chatInput" type="text" placeholder="Type a message..." class="flex-1 bg-transparent p-2 outline-none text-white text-sm" onkeypress="if(event.key==='Enter')sendChat()">
+        <button onclick="sendChat()" class="bg-cyan-400 text-black w-10 h-10 rounded-full hover:scale-110 transition-transform">
+            <i class="fa-solid fa-paper-plane"></i>
+        </button>
+    </div>
     </div>
                     </div>
                 </div>
@@ -498,20 +498,8 @@ function startApp() {
     document.getElementById('dashboard').classList.remove('hidden');
     document.getElementById('userName').innerText = user.name;
     document.getElementById('userRole').innerText = user.role;
-    const chatInputContainer = document.getElementById('chatInputContainer');
-    if (chatInputContainer) {
-        if (user.role === 'guest') {
-            // Guests see a "Read Only" message instead of the input box
-            chatInputContainer.innerHTML = `
-                <div class="p-4 bg-black/20 text-center border-t border-white/5">
-                    <p class="text-[10px] text-gray-500 font-black uppercase tracking-widest">
-                        <i class="fa-solid fa-lock mr-1"></i> Read-Only Mode
-                    </p>
-                </div>`;
-        } else {
-            chatInputContainer.classList.remove('hidden');
-        }
-    }
+    const chatInput = document.getElementById('chatInputContainer');
+    if(chatInput) chatInput.classList.remove('hidden');
     
     if (user.role === 'admin') {
         document.getElementById('adminControls').classList.remove('hidden');
@@ -729,21 +717,19 @@ function startApp() {
 
     function sendChat() { 
     const input = document.getElementById('chatInput');
-    
-    // BLOCK GUESTS: Check if user exists and is NOT a guest
-    if(!user || user.role === 'guest') {
-        console.log("Guests cannot send messages.");
-        return; 
-    }
+    const message = input.value.trim();
 
-    if(input.value.trim()) { 
+    // If there is a message and a user is set, send it!
+    if(message && user) { 
         socket.emit('sendMessage', { 
             sender: user.name, 
             role: user.role, 
-            text: input.value 
+            text: message 
         }); 
-        input.value = ''; 
-    } 
+        input.value = ''; // Clear input after sending
+    } else if (!user) {
+        alert("You must be logged in or entered as a guest to chat.");
+    }
     }
 
     function addChatMessage(data) {
