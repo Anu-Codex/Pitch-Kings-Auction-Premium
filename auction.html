@@ -681,8 +681,17 @@ function startApp() {
     function renderAuction(state) {
         const container = document.getElementById('auctionDisplay');
         if (!container || !state || !state.activePlayerId) {
-            container.innerHTML = `<div class="text-center py-20 opacity-30"><i class="fa-solid fa-gavel text-8xl mb-6"></i><p class="text-2xl font-black uppercase tracking-[0.5em]">Waiting for Nomination</p></div>`;
-            return;
+        container.innerHTML = `
+            <div class="text-center py-20 flex flex-col items-center justify-center">
+                <div class="dotted-loader mb-10">
+                    <div></div><div></div><div></div><div></div>
+                    <div></div><div></div><div></div><div></div>
+                </div>
+                <p class="text-2xl font-black uppercase tracking-[0.5em] text-white/30 animate-pulse">
+                    Waiting for Nomination
+                </p>
+            </div>`;
+        return;
         }
 
         const p = state.activePlayerId;
