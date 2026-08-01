@@ -860,41 +860,55 @@ function shuffleArray(array) {
     return shuffled;
 }
 
-// Initialize Shuffled Playlist
 let bgPlaylist = shuffleArray(rawPlaylist);
 let currentPlaylistIndex = 0;
 let activeMode = 'normal';
 
 const bgAudio = document.getElementById('bgMusic');
-const allAudioElements = [bgAudio, document.getElementById('introMusic'), document.getElementById('hypeMusic')];
+        const tracks = {
+    normal: document.getElementById('bgMusic'),
+    intro: document.getElementById('introMusic'),
+    hype: document.getElementById('hypeMusic')
+};
+
+// Add all audio elements to a list for easy stopping
+const allAudioElements = [bgAudio, tracks.intro, tracks.hype];
 
 function loadPlaylistSong(index) {
-    // Safety check for index bounds
     if (index >= bgPlaylist.length) {
-        bgPlaylist = shuffleArray(rawPlaylist); // Re-shuffle when playlist ends
+        bgPlaylist = shuffleArray(rawPlaylist);
         currentPlaylistIndex = 0;
     }
+    console.log("Attempting to play:", bgPlaylist[currentPlaylistIndex]);
     bgAudio.src = bgPlaylist[currentPlaylistIndex];
     bgAudio.load();
 }
 
-// 3. ROBUST "NEXT SONG" HANDLER
-bgAudio.addEventListener('ended', function() {
-    console.log("Song ended, moving to next...");
-    currentPlaylistIndex++;
-    loadPlaylistSong(currentPlaylistIndex);
-    if (activeMode === 'normal') {
-        bgAudio.play().catch(e => console.log("Playback blocked by browser"));
-    }
-});
+function switchTrack(newMode) {
+    activeMode = newMode;
+    
+    // Stop every audio element
+    allAudioElements.forEach(audio => {
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
 
-// Error handling to skip broken links
-bgAudio.addEventListener('error', function() {
-    console.log("Error loading song, skipping...");
-    currentPlaylistIndex++;
-    loadPlaylistSong(currentPlaylistIndex);
-    bgAudio.play();
-});
+    const currentTrack = tracks[newMode];
+    if (!currentTrack) return;
+
+    if (newMode === 'normal') {
+        if (!bgAudio.src || bgAudio.src === "") {
+            loadPlaylistSong(currentPlaylistIndex);
+        }
+        bgAudio.volume = 0.2;
+        bgAudio.play().catch(e => console.log("Playback interaction required"));
+    } else {
+        currentTrack.volume = 0.3;
+        currentTrack.play().catch(e => console.log("Playback interaction required"));
+    }
+}
         
 
 function stopAllMusic() {
@@ -903,55 +917,34 @@ function stopAllMusic() {
         audio.currentTime = 0; // Reset to start
     });
 }
-
-function switchTrack(newMode) {
-    activeMode = newMode;
-    
-    // Stop everything
-    allAudioElements.forEach(audio => {
-        if (audio) {
-            audio.pause();
-            audio.currentTime = 0;
-        }
-    });
-
-    if (newMode === 'normal') {
-        // Only load if there's no source, otherwise just play
-        if (!bgAudio.src) loadPlaylistSong(currentPlaylistIndex);
-        bgAudio.volume = 0.2;
-        bgAudio.play().catch(e => console.log("Interaction required for audio"));
-    } else {
-        const specialTrack = document.getElementById(newMode + 'Music');
-        if (specialTrack) {
-            specialTrack.volume = 0.3;
-            specialTrack.play().catch(e => console.log("Interaction required for audio"));
-        }
-    }
-}
 // --- FIXED MUTE TOGGLE ---
 function toggleMusic() {
     const musicIcon = document.getElementById('musicIcon');
-    
-    // Check if ANY audio is currently playing
-    const isPlaying = allAudioElements.some(a => !a.paused);
+    const currentTrack = tracks[activeMode] || bgAudio;
 
-    if (isPlaying) {
-        // Stop everything
-        allAudioElements.forEach(a => a.pause());
+    if (!currentTrack.paused) {
+        currentTrack.pause();
         musicIcon.className = "fa-solid fa-volume-xmark";
         musicIcon.style.color = "#ff4444";
     } else {
-        // Resume ONLY the background music playlist
-        bgAudio.play();
+        currentTrack.play();
         musicIcon.className = "fa-solid fa-volume-high";
         musicIcon.style.color = "#00e5ff";
     }
 }
+        bgAudio.addEventListener('ended', function() {
+    currentPlaylistIndex++;
+    loadPlaylistSong(currentPlaylistIndex);
+    if (activeMode === 'normal') bgAudio.play();
+});
 
-// Remote Listeners
-socket.on('clientEvent_PlayIntro', () => switchTrack('intro'));
-socket.on('clientEvent_PlayHype', () => switchTrack('hype'));
-socket.on('clientEvent_PlayNormal', () => switchTrack('normal'));
+// Skip broken links
+bgAudio.addEventListener('error', function() {
+    console.log("Link failed, skipping to next...");
+    currentPlaylistIndex++;
+    loadPlaylistSong(currentPlaylistIndex);
+    if (activeMode === 'normal') bgAudio.play();
+});
 
 // Updated Start Audio function for the Volume Popup
 function startAuctionAudio() {
