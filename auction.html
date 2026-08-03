@@ -369,6 +369,15 @@ body {
     <h3 class="text-xl font-bold mb-6 text-white uppercase tracking-widest flex items-center gap-3">
         <i class="fa-solid fa-user-shield text-cyan-400"></i> LOGIN MANAGEMENT
     </h3>
+    <!-- DANGER ZONE RESET -->
+<div class="mt-12 pt-8 border-t border-red-500/20">
+    <h4 class="text-red-500 font-black text-[10px] uppercase tracking-[0.5em] mb-4">Danger Zone</h4>
+    <button onclick="triggerMegaReset()" class="w-full bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white border border-red-500/30 py-4 rounded-2xl font-black uppercase transition-all flex items-center justify-center gap-3">
+        <i class="fa-solid fa-skull-crossbones"></i> 
+        Erase All Data & Start Fresh
+    </button>
+    <p class="text-[9px] text-gray-600 mt-2 text-center uppercase">This will delete all players, teams, chats, and accounts permanently.</p>
+</div>
     
     <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <input id="uEmail" type="email" placeholder="Official Email" class="w-full bg-gray-900 border border-white/10 p-3 rounded-xl text-white outline-none focus:border-cyan-400">
@@ -1100,6 +1109,23 @@ function closeZoom() {
     
     // Re-enable scrolling
     document.body.style.overflow = 'auto';
+}
+        // --- MEGA RESET FUNCTION ---
+function triggerMegaReset() {
+    if (user.role !== 'admin') return;
+
+    const confirm1 = confirm("🚨 ATTENTION: You are about to erase the ENTIRE database. This cannot be undone. Continue?");
+    if (confirm1) {
+        const confirm2 = confirm("FINAL WARNING: This will delete every Player, Team, and Chat record. Are you 100% sure?");
+        if (confirm2) {
+            const safetyCode = prompt("Type 'CONFIRM RESET' to proceed:");
+            if (safetyCode === "CONFIRM RESET") {
+                socket.emit('hardResetDatabase');
+            } else {
+                alert("Reset cancelled. Code was incorrect.");
+            }
+        }
+    }
 }
 
     function generatePDF() {
